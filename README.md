@@ -8,7 +8,16 @@ Web browser で web server を通してプログラムにアクセスします�
 ユーザーが入力した文章はマルコフ連鎖用の辞書の形式で保存されていきます。
 
 ## 使い方
-ディレクトリ cgi-bin から http サーバーを起動して、cgi-bin の下にある chatbot.py を Web browser で開きます。
+ディレクトリ cgi-bin から http サーバーを起動してください。
+
+```
+$ python3 -m http.server --cgi 8080
+```
+
+Web browser を開いたら、下記の URL を入力することによって cgi-bin の下にある chatbot.py を開いてください。
+```
+ttp://localhost:8080/cgi-bin/chatbot.py
+```
 
 
 ## 前提とする環境
