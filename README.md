@@ -23,7 +23,7 @@ cgi は標準ライブラリなので、改めてインストールしなくて�
 パッケージが conda でみつからない場合には、`pip install janome` でインストールします。
 
 ## 使い方
-Mac の場合はターミナル、Windows の場合はコマンドプロンプトか bash on windows を開いてください。ソースコードを chatbot というディレクトリ以下に展開したものとして、以下説明します。ディレクトリ chatbot に移って http サーバーを起動してください。
+Mac または Linux の場合はターミナル、Windows の場合はコマンドプロンプトか bash on windows を開いてください。ソースコードを chatbot というディレクトリ以下に展開したものとして、以下説明します。ディレクトリ chatbot に移って http サーバーを起動してください。
 
 ```
 $ python3 -m http.server --cgi 8080
