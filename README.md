@@ -30,9 +30,11 @@ http://localhost:8080/cgi-bin/chatbot.py
  - Janome
  - cgi
 
- Python を Anaconda でインストールした場合は、なるべく conda でインストールを試みて、conda でパッケージがみつからない場合にのみ、pip install をしてください。
-`conda search janome` をコマンド
-
+cgi は標準ライブラリなので、改めてインストールしなくても入っているはずです。
+Janome は conda 
+ Python を Anaconda でインストールした場合は、なるべく conda でインストールを試みてkください。具体的には `conda search janome` でライブラリパッケージを検索します。 
+見つかったら、`conda install janome` でインストールします。
+パッケージがみつからない場合には、`pip install janome` でインストールします。
 
 
 ## 出典
