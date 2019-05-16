@@ -8,7 +8,7 @@ Web browser で web server を通してプログラムにアクセスします�
 ユーザーが入力した文章はマルコフ連鎖用の辞書の形式で保存されていきます。
 
 ## 使い方
-ディレクトリ chatbot から http サーバーを起動してください。
+Mac の場合はターミナル、Windows の場合はコマンドプロンプトか bash on windows を開いてください。ソースコードを chatbot というディレクトリ以下に展開したものとして、以下説明します。ディレクトリ chatbot に移って http サーバーを起動してください。
 
 ```
 $ python3 -m http.server --cgi 8080
@@ -30,7 +30,12 @@ http://localhost:8080/cgi-bin/chatbot.py
  - Janome
  - cgi
 
+ Python を Anaconda でインストールした場合は、なるべく conda でインストールを試みて、conda でパッケージがみつからない場合にのみ、pip install をしてください。
+`conda search janome` をコマンド
+
+
+
 ## 出典
 書籍：増補改訂 Pythonによるスクレイピング＆機械学習 [開発テクニック],  クジラ飛行机著
 
-クジラ飛行机こと kujirahand さん、ありがとうございます。あなたが本に書かれていたソフトウエアをリミックスして発展させていきたいと思います。
+クジラ飛行机こと kujirahand さんに感謝します。
