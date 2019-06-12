@@ -2,6 +2,13 @@
 import cgi
 from botengine import make_reply
 
+# Windows環境でサーバーを起動したときの文字化けを防ぐための設定
+# 標準出力の文字コードを utl-8 にする
+import sys
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
+
 # フォームからの入力を得る --- (*1)
 form = cgi.FieldStorage()
 
