@@ -3,7 +3,7 @@ import cgi
 from botengine import make_reply
 
 # Windows環境でサーバーを起動したときの文字化けを防ぐための設定
-# 標準出力の文字コードを utl-8 にする
+# 標準出力の文字コードを utf-8 にする
 import sys
 import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
@@ -31,39 +31,10 @@ def api_say():
 def show_form():
     print("Content-Type: text/html; charset=utf-8")
     print("")
-    print("""
-    <html><meta charset="utf-8"><body>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <style>
-        h1   { background-color: #ffe0e0; }
-        div  { padding:10px; }
-        span { border-radius: 10px; background-color: #ffe0e0; padding:8px; }
-        .bot { text-align: left; }
-        .usr { text-align: right; }
-    </style>
-    <h1>チャットボットと会話しよう</h1>
-    <div id="chat"></div>
-    <div class='usr'><input id="txt" size="40">
-    <button onclick="say()">発言</button></div>
-    <script>
-    var url = "./chatbot.py";
-    function say() {
-      var txt = $('#txt').val();
-      $.get(url, {"m":"say","txt":txt},
-        function(res) {
-          var html = "<div class='usr'><span>" + esc(txt) +
-            "</span>:あなた</div><div class='bot'>ボット:<span>" + 
-            esc(res) + "</span></div>";
-          $('#chat').html($('#chat').html()+html);
-          $('#txt').val('').focus();
-        });
-    }
-    function esc(s) {
-        return s.replace('&', '&amp;').replace('<','&lt;')
-                .replace('>', '&gt;');
-    }
-    </script></body></html>
-    """)
+    with open("cgi-bin/form.html", "r") as f:
+        content = f.readlines()  
+    for line in content:
+        print(line, end="")
 
 main()
 
