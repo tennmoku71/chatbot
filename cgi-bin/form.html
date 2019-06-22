@@ -10,7 +10,7 @@
 <h1>チャットボットと会話しよう</h1>
 <div id="chat"></div>
 <div class='usr'><input id="txt" size="40">
-<button onclick="say()">発言</button></div>
+<button id="say" onclick="say()">発言</button></div>
 <script>
 var url = "./chatbot.py";
 function say() {
@@ -28,4 +28,12 @@ function esc(s) {
     return s.replace('&', '&amp;').replace('<','&lt;')
             .replace('>', '&gt;');
 }
+
+<!-- エンターキーを押すことで、「発言」ボタンを押したのと同じことにする -->
+$('#txt').keydown(function (e) {
+    if (e.keyCode == 13) {
+        $('#say').click();
+    }
+});
+
 </script></body></html>
