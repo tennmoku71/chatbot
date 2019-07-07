@@ -73,28 +73,37 @@ def make_reply_original(text):
     return make_sentence("@")
 
 def make_reply(text):
-    # まず単語を学習する
-    if text[-1] != "。": text += "。"
+    # 文章に "何時" が含まれていたら日付と時刻を返す。
     if "何時" in text: 
         date_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
         return date_time
+    # まず単語を学習する
+    if text[-1] != "。": text += "。"
     words = tokenizer.tokenize(text)
     register_dic(words)
-    # 辞書に単語があれば、そこから話す
+    # 形態素解析して分割した複数の単語についてループする
     for w in words:
+        # 単語
         face = w.surface
+        # 品詞
         ps = w.part_of_speech.split(',')[0]
         if ps == "感動詞":
             return face + "。"
         if ps == "名詞" or ps == "形容詞":
-            date_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-            if face=="時刻":return date_time
-            aDate = datetime.now().strftime("%Y.%m.%d")
-            if face=="日付":return aDate
-            weekday = datetime.now().weekday()
-            week_dic= {0:"月曜日",1:"火曜日",2:"水曜日",3:"木曜日",4:"金曜日",5:"土曜日",6:"日曜日"}
-            if face=="曜日":return week_dic[weekday]
-        #if face in dic:return make_sentence(face)
+            # 時刻、日付、曜日　が含まれていたら現在の値を返す。
+            if face=="時刻":
+                date_time = datetime.now().strftime("%H:%M:%S")
+                return date_time
+            if face=="日付":
+                a_date = datetime.now().strftime("%Y年%m月%d日")
+                return a_date
+            if face=="曜日":
+                weekday = datetime.now().weekday()
+                week_dic= {0:"月曜日",1:"火曜日",2:"水曜日",3:"木曜日",4:"金曜日",5:"土曜日",6:"日曜日"}
+                return week_dic[weekday]
+            # 辞書に単語があれば、そこから話す
+            if face in dic:
+                return make_sentence(face)
     return make_sentence("@")
 
 # 辞書があれば最初に読み込む
