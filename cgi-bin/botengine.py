@@ -1,5 +1,6 @@
 from janome.tokenizer import Tokenizer
 import os, re, json, random
+from fortune import tell_fortune
 
 dict_file = "chatbot-data.json"
 dic = {}
@@ -57,6 +58,9 @@ def word_choice(sel):
 
 # チャットボットに返答させる --- (*3)
 def make_reply(text):
+    if "占い." in text:
+        text1 = text.replace("占い.", "")
+        return tell_fortune(text1)
     # まず単語を学習する
     if text[-1] != "。": text += "。"
     words = tokenizer.tokenize(text)
