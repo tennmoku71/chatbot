@@ -142,14 +142,14 @@ $ git branch -r
 この出力は次のようなものかそれにいくつかのブランチが付け加えられたものになります。
 
 ```
-  remotes/origin/HEAD -> origin/master
-  remotes/origin/develop
-  remotes/origin/master
+  origin/HEAD -> origin/master
+  origin/develop
+  origin/master
 ```
 
 リモートブランチに、master のほかに develop もあるはずです。
 
-リモートブランチの develop をローカルにダウンロードしそこで作業することにします。
+リモートブランチの develop をローカルにダウンロードしそれをチェックアウトして作業することにします。
 
 ```sh
 $ git checkout -b  develop origin/develop
@@ -194,7 +194,7 @@ $ git checkout master
 ```sh
 $ git branch
 ```
-表示が次のように、`*` が masuter の方についていればオッケーです。
+表示が次のように、`*` が master の方についていればオッケーです。
 ```
   develop
 * master
@@ -327,6 +327,24 @@ Web ブラウザで GitHub の Chatbot Project のページを開きます。
     占い機能を追加しました。コードをレビューしていただき、問題なければ develop ブランチにマージしていただければ幸いです。
 
 あとは、共同開発者のレビューを待ちます。
+
+### 11. develop ブランチへ fortune ブランチを統合（マージ）する
+プルリクエストを送ってすんなりマージできることもありますが、できないこともあります。
+
+そういうときは、develop ブランチへ fortune ブランチをマージする操作をローカルで行ってみます。
+
+ここでは、マージさせたい本流のブランチを develop とします。
+まず、develop をチェックアウトします。
+
+```sh
+$ git checkout develop
+```
+次に、develop ブランチへ fortune ブランチを統合します。
+
+```sh
+$ git merge fortune
+```
+これでうまく統合できれば良いですが、うまくできないときは、ソースコードをよく見て調整してください。
 
 
 ## 【Git コマンドのまとめ】
