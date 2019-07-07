@@ -25,7 +25,7 @@ $ git config --global core.editor "code"
 
     https://github.com/
 
-## 共同開発者にしてもらうための手続き
+### 共同開発者にしてもらうための手続き
 GitHub のアカウントを取得したら、chatbot project の共同開発者にしてもらうために、
 チャットやメールなどで、chatbot リポジトリの管理者にアカウント名を連絡します。
 
