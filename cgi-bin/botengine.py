@@ -1,6 +1,6 @@
 from janome.tokenizer import Tokenizer
 import os, re, json, random
-
+from datetime import datetime
 dict_file = "chatbot-data.json"
 dic = {}
 tokenizer = Tokenizer() # janome
@@ -68,11 +68,16 @@ def make_reply(text):
         if ps == "感動詞":
             return face + "。"
         if ps == "名詞" or ps == "形容詞":
-            if face in dic: return make_sentence(face)
+            date_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
+            if face=="時刻":return date_time
+            aDate = datetime.now().strftime("%Y.%m.%d")
+            if face=="日付":return aDate
+            weekday = datetime.now().weekday()
+            week_dic= {0:"月曜日",1:"火曜日",2:"水曜日",3:"木曜日",4:"金曜日",5:"土曜日",6:"日曜日"}
+            if face=="曜日":return week_dic[weekday]
+            if face in dic:return make_sentence(face)
     return make_sentence("@")
 
 # 辞書があれば最初に読み込む
 if os.path.exists(dict_file):
     dic = json.load(open(dict_file,"r"))
-
-
