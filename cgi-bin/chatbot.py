@@ -2,6 +2,7 @@
 import cgi
 from botengine import make_reply
 
+
 # Windows環境でサーバーを起動したときの文字化けを防ぐための設定
 # 標準出力の文字コードを utf-8 にする
 import sys

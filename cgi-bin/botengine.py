@@ -1,6 +1,7 @@
 from janome.tokenizer import Tokenizer
 import os, re, json, random
-from datetime import datetime
+from datetime import datetime　# りなんが追加
+from fortune import tell_fortune　# くれりんが追加
 
 dict_file = "chatbot-data.json"
 dic = {}
@@ -73,7 +74,11 @@ def make_reply_original(text):
     return make_sentence("@")
 
 def make_reply(text):
-    # 文章に "何時" が含まれていたら日付と時刻を返す。
+    # 文章に "占い." が含まれていたら日付と時刻を返す。（くれりんが追加）
+    if "占い." in text:
+        text1 = text.replace("占い.", "")
+        return tell_fortune(text1)
+    # 文章に "何時" が含まれていたら日付と時刻を返す。（りなんが追加）
     if "何時" in text: 
         date_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
         return date_time
@@ -90,7 +95,7 @@ def make_reply(text):
         if ps == "感動詞":
             return face + "。"
         if ps == "名詞" or ps == "形容詞":
-            # 時刻、日付、曜日　が含まれていたら現在の値を返す。
+            # 時刻、日付、曜日　が含まれていたら現在の値を返す。（りなんが追加）
             if face=="時刻":
                 date_time = datetime.now().strftime("%H:%M:%S")
                 return date_time
