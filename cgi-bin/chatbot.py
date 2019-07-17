@@ -9,6 +9,8 @@ import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
+
+
 # フォームからの入力を得る --- (*1)
 form = cgi.FieldStorage()
 
@@ -41,10 +43,10 @@ def show_form():
         .bot { text-align: left; }
         .usr { text-align: right; }
     </style>
-    <h1>チャットボットと会話しよう</h1>
+    <h1>楽しくお話ししよう</h1>
     <div id="chat"></div>
     <div class='usr'><input id="txt" size="40">
-    <button onclick="say()">発言</button></div>
+    <button id="botton" onclick="say()">発言</button></div>
     <script>
     var url = "./chatbot.py";
     function say() {
@@ -52,7 +54,7 @@ def show_form():
       $.get(url, {"m":"say","txt":txt},
         function(res) {
           var html = "<div class='usr'><span>" + esc(txt) +
-            "</span>:あなた</div><div class='bot'>ボット:<span>" + 
+            "</span>:me</div><div class='bot'>bot:<span>" + 
             esc(res) + "</span></div>";
           $('#chat').html($('#chat').html()+html);
           $('#txt').val('').focus();
@@ -62,9 +64,13 @@ def show_form():
         return s.replace('&', '&amp;').replace('<','&lt;')
                 .replace('>', '&gt;');
     }
+    $('#txt').keydown(function(e){
+     if(e.keyCode == 13){
+        $('#botton').click();
+     }
+    });
     </script></body></html>
     """)
-
 main()
 
 
