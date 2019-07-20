@@ -10,6 +10,8 @@ import io
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
+
+
 # フォームからの入力を得る --- (*1)
 form = cgi.FieldStorage()
 
