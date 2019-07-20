@@ -77,7 +77,7 @@ def make_reply(text):
         if ps == "名詞" or ps == "形容詞":
             # 登録された地名が辞書 city_dic にあれば、その天気を返す
             if face in city_dic :
-                    return show_weather(city_dic[face])　
+                    return show_weather(city_dic[face])
             if face in dic: return make_sentence(face) 
     return make_sentence("@")
 
