@@ -1,8 +1,8 @@
 from janome.tokenizer import Tokenizer
 import os, re, json, random
-from datetime import datetime　# りなんが追加
-from fortune import tell_fortune　# くれりんが追加
-from weather import show_weather  # 天気のモジュール
+from datetime import datetime # りなんが追加
+from fortune import tell_fortune # くれりんが追加
+from weather import show_weather # 天気のモジュール
 
 dict_file = "chatbot-data.json"
 dic = {}
@@ -64,12 +64,6 @@ def make_reply_original(text):
     if text[-1] != "。": text += "。"
     words = tokenizer.tokenize(text)
     register_dic(words)
-    city_dic = {"東京" : "Tokyo,JP" , 
-            "名古屋" : "Nagoya,JP" , 
-            "大阪" : "Osaka,JP" , 
-            "福岡" : "Fukuoka,JP" , 
-            "札幌" : "Sapporo,JP"}
-    
     # 辞書に単語があれば、そこから話す
     for w in words:
         face = w.surface
@@ -77,9 +71,6 @@ def make_reply_original(text):
         if ps == "感動詞":
             return face + "。"
         if ps == "名詞" or ps == "形容詞":
-            # 登録された地名が辞書 city_dic にあれば、その天気を返す
-            if face in city_dic :
-                    return show_weather(city_dic[face])
             if face in dic: return make_sentence(face) 
     return make_sentence("@")
 
@@ -92,6 +83,12 @@ def make_reply(text):
     if "何時" in text: 
         date_time = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
         return date_time
+    # 地名の辞書を作成
+    city_dic = {"東京" : "Tokyo,JP" , 
+            "名古屋" : "Nagoya,JP" , 
+            "大阪" : "Osaka,JP" , 
+            "福岡" : "Fukuoka,JP" , 
+            "札幌" : "Sapporo,JP"}    
     # まず単語を学習する
     if text[-1] != "。": text += "。"
     words = tokenizer.tokenize(text)
@@ -116,6 +113,9 @@ def make_reply(text):
                 weekday = datetime.now().weekday()
                 week_dic= {0:"月曜日",1:"火曜日",2:"水曜日",3:"木曜日",4:"金曜日",5:"土曜日",6:"日曜日"}
                 return week_dic[weekday]
+            # 登録された地名が辞書 city_dic にあれば、その天気を返す
+            if face in city_dic :
+                    return show_weather(city_dic[face])
             # 辞書に単語があれば、そこから話す
             if face in dic:
                 return make_sentence(face)
