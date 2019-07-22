@@ -34,7 +34,7 @@ def api_say():
 def show_form():
     print("Content-Type: text/html; charset=utf-8")
     print("")
-    with open("cgi-bin/form.html", "r") as f:
+    with open("cgi-bin/form.html", "r", encoding="utf-8") as f:
         content = f.readlines()  
     for line in content:
         print(line, end="")
