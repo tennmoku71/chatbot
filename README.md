@@ -15,10 +15,9 @@ Web browser で web server を通してプログラムにアクセスします�
 
 ### ライブラリ
  - Janome
- - cgi
+ - requests
 
-cgi は標準ライブラリなので、改めてインストールしなくても入っているはずです。
- Python を Anaconda でインストールした場合は、なるべく conda でインストールを試みてください。具体的には `conda search janome` でライブラリパッケージを検索します。 
+ Python を Anaconda でインストールした場合は、外部ライブラリをインストールするときは、なるべく pip を使わず conda でインストールを試みてください。具体的には、例えば janome の場合、 `conda search janome` でライブラリパッケージを検索します。 
 見つかったら、`conda install janome` でインストールします。
 パッケージが conda でみつからない場合には、`pip install janome` でインストールします。
 
