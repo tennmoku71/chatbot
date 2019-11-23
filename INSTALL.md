@@ -72,8 +72,10 @@ cp -a chatbot-master chatbot
 ```
 
 ### 5-3. chatbot フォルダで http サーバーを立ち上げる
+```sh
 $ cd chatbot
 $ python -m http.server --cgi 8080
+```
 （Mac の場合は python の代わりに python3 としてください。）
 
 ### 5-4. チャットボットを起動する
