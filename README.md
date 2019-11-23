@@ -27,9 +27,9 @@ Web browser で web server を通してプログラムにアクセスします�
 Mac または Linux の場合はターミナル、Windows の場合はコマンドプロンプトか bash on windows を開いてください。ソースコードを chatbot というディレクトリ以下に展開したものとして、以下説明します。ディレクトリ chatbot に移って http サーバーを起動してください。
 
 ```
-$ python3 -m http.server --cgi 8080
+$ python -m http.server --cgi 8080
 ```
-
+(macOSの場合は、python の代わりに python3 としてください。)
 Web browser を開いたら、下記の URL を入力することによって cgi-bin の下にある chatbot.py を開いてください。
 ```
 http://localhost:8080/cgi-bin/chatbot.py
