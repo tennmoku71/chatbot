@@ -28,3 +28,6 @@ def show_weather(city_name):
     sty = sty + "湿度は " + str(date["main"]["humidity"]) + "％。"
     
     return sty
+
+if __name__ == "__main__":
+    print("東京:", show_weather("Tokyo,JP"))
