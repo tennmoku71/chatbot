@@ -5,12 +5,21 @@ Web browser chat bot on python
 
 ### environmental
 
- - Python 3.7
+ - Python 3
+
+## install
+
+```
+$ pip install chatbotweb
+```
 
 ## how to use
 
 ```
-$ python test.py
+$ import os
+$ from chatbotweb import server
+$ userdef_path = os.path.dirname(os.path.abspath(__file__))
+$ server.run(userdef_path)
 ```
 
 please access in this page
@@ -23,6 +32,7 @@ http://localhost:8080/cgi-bin/chatbot.py
 pleasse create chatbot_userdef.py and get_answer function
 
 ```python:chatbot_userdef.py
+# chatbot_userdef.py
 def get_answer(text):
     if text == "Hello":
         return "Hello! Oni-chan!"
@@ -39,6 +49,8 @@ The tag described in chatbot_userdef.html is inserted inside the body element.
 Use style or script tag if you want to add stylesheet or japascript 
 
 ```html:chatbot_userdef.html
+<!-- chatbot_userdef.html -->
+
 <style>
     h1   { background-color: #ffe0e0; }
     div  { padding:10px; }

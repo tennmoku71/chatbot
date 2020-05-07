@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: chatbotweb
+Version: 0.0.1
+Summary: Automatic generation of web interface for user-defined chatbot
+Home-page: UNKNOWN
+Author: Yoshiki Ohira
+Author-email: ohira.yoshiki@irl.sys.es.osaka-u.ac.jp
+License: UNKNOWN
+Description: An interface that allows you to chat on the web using the chatbot engine of the question and answer type you created
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
