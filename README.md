@@ -1,43 +1,24 @@
 # Chatbot Project
 
-## 概要
-Python で作成した Chatbot です。
-Web browser で web server を通してプログラムにアクセスします。
-画面で文章を入力すると、ボットがなんらかの文章を返してきます。
-ボットの文章作成にはマルコフ連鎖モデルを使用しています。
-ユーザーが入力した文章はマルコフ連鎖用の辞書の形式で保存されていきます。
+## Overview
+Web browser chat bot on python
 
-## 前提とする環境
-
-　開発を始める際に、前提とする環境についてここに書いているよりももう少し詳しい情報をこのパッケージの INSTALL.md に書きましたので、必要に応じて参照してください。
-
-### Python バージョン
+### environmental
 
  - Python 3.7
 
-### ライブラリ
- - Janome
- - requests
 
- Python を Anaconda でインストールした場合は、外部ライブラリをインストールするときは、なるべく pip を使わず conda でインストールを試みてください。具体的には、例えば janome の場合、 `conda search janome` でライブラリパッケージを検索します。 
-見つかったら、`conda install janome` でインストールします。
-パッケージが conda でみつからない場合には、`pip install janome` でインストールします。
-
-## 使い方
-Mac または Linux の場合はターミナル、Windows の場合はコマンドプロンプトか bash on windows を開いてください。ソースコードを chatbot というディレクトリ以下に展開したものとして、以下説明します。ディレクトリ chatbot に移って http サーバーを起動してください。
+## how to use
 
 ```
-$ python -m http.server --cgi 8080
+$ sh start-chatbot.sh
 ```
-(macOSの場合は、python の代わりに python3 としてください。)
-Web browser を開いたら、下記の URL を入力することによって cgi-bin の下にある chatbot.py を開いてください。
+
+please access in this page
 ```
 http://localhost:8080/cgi-bin/chatbot.py
 ```
-こうすると、ページの一番上に「チャットボットと会話しよう」という文字がピンク色の帯の中に表示されます。これがチャットの画面です。
 
 
-## 出典
-書籍：増補改訂 Pythonによるスクレイピング＆機械学習 [開発テクニック],  クジラ飛行机著
-
-クジラ飛行机こと kujirahand さんに感謝します。
+## reference
+original https://github.com/HideKobayashi/chatbot

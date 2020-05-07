@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import cgi
-from botengine import make_reply
 
 # Windows環境でサーバーを起動したときの文字化けを防ぐための設定
 # 標準出力の文字コードを utl-8 にする
@@ -24,7 +23,7 @@ def api_say():
     print("")
     txt = form.getvalue("txt", default="")
     if txt == "": return
-    res = make_reply(txt)
+    res = txt
     print(res)
 
 # フォームを画面に出力 --- (*4)
