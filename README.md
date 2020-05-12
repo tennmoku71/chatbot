@@ -16,31 +16,21 @@ $ pip install chatbotweb
 ## how to use
 
 ```
-$ import os
-$ from chatbotweb import server
-$ userdef_path = os.path.dirname(os.path.abspath(__file__))
-$ server.run(userdef_path)
-```
+from chatbotweb import CallbackServer
 
-please access in this page
-```
-http://localhost:8080/cgi-bin/chatbot.py
-```
-
-## customize chatbot engine
-
-pleasse create chatbot_userdef.py and get_answer function
-
-```python:chatbot_userdef.py
-# chatbot_userdef.py
-def get_answer(text):
+def callback_method(text):
     if text == "Hello":
         return "Hello! Oni-chan!"
     else:
         return "Sorry, I don't know what you mean."
+
+CallbackServer.start(8080, callback_method)
 ```
 
-first argument is user input string data and you have to return any string data(chatbot utterance)
+please access in this page
+```
+http://localhost:8080
+```
 
 ## customize view
 
@@ -48,9 +38,10 @@ pleasse create chatbot_userdef.html
 The tag described in chatbot_userdef.html is inserted inside the body element.
 Use style or script tag if you want to add stylesheet or japascript 
 
-```html:chatbot_userdef.html
-<!-- chatbot_userdef.html -->
+```html:default.html
+<!-- default -->
 
+myhtml = """
 <style>
     h1   { background-color: #ffe0e0; }
     div  { padding:10px; }
@@ -59,6 +50,9 @@ Use style or script tag if you want to add stylesheet or japascript
     .usr { text-align: right; }
 </style>
 <h1>チャットボットと会話しよう</h1>
+"""
+
+CallbackServer.start(8080, callback_method, html = myhtml)
 ```
 
 The default html looks like this

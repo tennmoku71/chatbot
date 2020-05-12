@@ -8,7 +8,7 @@ def _test_requirements():
  
 setuptools.setup(
     name="chatbotweb",
-    version="0.0.1",
+    version="0.0.2",
     author="Yoshiki Ohira",
     author_email="ohira.yoshiki@irl.sys.es.osaka-u.ac.jp",
     description="Automatic generation of web interface for user-defined chatbot",
