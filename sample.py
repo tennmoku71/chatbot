@@ -7,4 +7,4 @@ def callback_method(text):
     return "response "+text
 
 if __name__ == '__main__':
-    CallbackServer.start(8080, callback_method)
+    CallbackServer.start("0.0.0.0",3000, callback_method)

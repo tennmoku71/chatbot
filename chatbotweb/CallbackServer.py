@@ -4,10 +4,10 @@ from http.server import HTTPServer
 from http.server import BaseHTTPRequestHandler
 from urllib import parse as urlparse
 
-def start(port, callback,html=None):
+def start(address,port, callback,html=None):
     def handler(*args):
         CallbackServer(callback,html,*args)
-    server = HTTPServer(('', int(port)), handler)
+    server = HTTPServer((address, int(port)), handler)
     print("server start")
     print("access : http://localhost:"+str(port))
     print("please press ctrl+c if you want to stop server")
