@@ -4,9 +4,9 @@ from http.server import HTTPServer
 from http.server import BaseHTTPRequestHandler
 from urllib import parse as urlparse
 
-def start(address,port, callback, initfunc, html=None):
+def start(address,port, callback, initfunc, bot_name, html=None):
     def handler(*args):
-        CallbackServer(callback,initfunc,html,*args)
+        CallbackServer(callback,initfunc,bot_name,html,*args)
     server = HTTPServer((address, int(port)), handler)
     print("server start")
     print("access : http://localhost:"+str(port))
@@ -15,9 +15,10 @@ def start(address,port, callback, initfunc, html=None):
 
 class CallbackServer(BaseHTTPRequestHandler):
 
-    def __init__(self, callback,initfunc, html, *args):
+    def __init__(self, callback,initfunc, bot_name, html, *args):
         self.callback = callback
         self.initfunc = initfunc
+        self.bot_name = bot_name
         self.html = html
         BaseHTTPRequestHandler.__init__(self, *args)
 
@@ -36,7 +37,7 @@ class CallbackServer(BaseHTTPRequestHandler):
     def show_form(self):
         self.send_response(200)
         self.end_headers()
-        self.initfunc()
+        startup_utterance = self.initfunc()
 
         default_view = """
             <style>
@@ -53,7 +54,7 @@ class CallbackServer(BaseHTTPRequestHandler):
             <html><meta charset="utf-8"><body>
             <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
             <userdef>
-            <div id="chat"></div>
+            <div id="chat"><init_chat_html></div>
             <div class='usr'><input id="txt" size="40">
             <button onclick="say()">発言</button></div>
             <script>
@@ -70,8 +71,9 @@ class CallbackServer(BaseHTTPRequestHandler):
               var txt = $('#txt').val();
               $.post(url, {"txt":htmlentities(txt)},
                 function(res) {
+                  
                   var html = "<div class='usr'><span>" + esc(txt) +
-                    "</span>:あなた</div><div class='bot'>ボット:<span>" + 
+                    "</span>:あなた</div><div class='bot'><robot_name>:<span>" + 
                     esc(res) + "</span></div>";
                   $('#chat').html($('#chat').html()+html);
                   $('#txt').val('').focus();
@@ -85,11 +87,17 @@ class CallbackServer(BaseHTTPRequestHandler):
             """
 
         message = None
-
-        if self.html is not None:
-            message = main_view.replace("<userdef>",self.html)
+        message = main_view.replace("<bot_name>",self.bot_name)
+        
+        if startup_utterance is not None:
+            message = message.replace("<init_chat_html>","""<div class="bot">""" + self.bot_name + """:<span>""" + startup_utterance + """</span></div>""")
         else:
-            message = main_view.replace("<userdef>",default_view)
+            message = message.replace("<init_chat_html>","")
+        
+        if self.html is not None:
+            message = message.replace("<userdef>",self.html)
+        else:
+            message = message.replace("<userdef>",default_view)
 
         self.wfile.write(message.encode())
         return
