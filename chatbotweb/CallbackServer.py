@@ -4,9 +4,9 @@ from http.server import HTTPServer
 from http.server import BaseHTTPRequestHandler
 from urllib import parse as urlparse
 
-def start(address,port, callback,html=None):
+def start(address,port, callback, initfunc, html=None):
     def handler(*args):
-        CallbackServer(callback,html,*args)
+        CallbackServer(callback,initfunc,html,*args)
     server = HTTPServer((address, int(port)), handler)
     print("server start")
     print("access : http://localhost:"+str(port))
@@ -15,8 +15,9 @@ def start(address,port, callback,html=None):
 
 class CallbackServer(BaseHTTPRequestHandler):
 
-    def __init__(self, callback,html, *args):
+    def __init__(self, callback,initfunc, html, *args):
         self.callback = callback
+        self.initfunc = initfunc
         self.html = html
         BaseHTTPRequestHandler.__init__(self, *args)
 
@@ -35,6 +36,7 @@ class CallbackServer(BaseHTTPRequestHandler):
     def show_form(self):
         self.send_response(200)
         self.end_headers()
+        self.initfunc()
 
         default_view = """
             <style>

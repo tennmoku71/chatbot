@@ -24,12 +24,17 @@ def callback_method(text):
     else:
         return "Sorry, I don't know what you mean."
 
-CallbackServer.start(8080, callback_method)
+CallbackServer.start("0.0.0.0",8080, callback_method)
 ```
 
 please access in this page
 ```
+local access
 http://localhost:8080
+
+global access
+http://[server global ip address]:8080
+※ please open 8080 port of firewall
 ```
 
 ## customize view
