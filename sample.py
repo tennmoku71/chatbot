@@ -1,13 +1,27 @@
 #!/usr/bin/env python
 # coding:utf-8
 
-from chatbotweb import CallbackServer
+from chatbotweb.ChatServer import ChatServer
 
-def init_function():
-	return "hello"
+class myChatClass():
 
-def callback_method(text):
-    return "response "+text
+    BOT_NAME = "my bot"
+    html = None
+
+    def __init__(self):
+        pass
+
+    class UserClass():
+
+        def init_function(self, query_params):
+            return "hello"
+
+        def callback_method(self,text):
+            return "response "+text
 
 if __name__ == '__main__':
-    CallbackServer.start("0.0.0.0",3000, callback_method, init_function, bot_name = "bot")
+
+    address = "0.0.0.0"
+    port = 3000
+    chat_server = ChatServer(myChatClass())
+    chat_server.start(address, port)

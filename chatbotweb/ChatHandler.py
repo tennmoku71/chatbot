@@ -4,40 +4,31 @@ from http.server import HTTPServer
 from http.server import BaseHTTPRequestHandler
 from urllib import parse as urlparse
 
-def start(address,port, callback, initfunc, bot_name, html=None):
-    def handler(*args):
-        CallbackServer(callback,initfunc,bot_name,html,*args)
-    server = HTTPServer((address, int(port)), handler)
-    print("server start")
-    print("access : http://localhost:"+str(port))
-    print("please press ctrl+c if you want to stop server")
-    server.serve_forever()
+class ChatRequestHandler(BaseHTTPRequestHandler):
 
-class CallbackServer(BaseHTTPRequestHandler):
-
-    def __init__(self, callback,initfunc, bot_name, html, *args):
-        self.callback = callback
-        self.initfunc = initfunc
-        self.bot_name = bot_name
-        self.html = html
+    def __init__(self,chat_obj ,user_obj, *args):
+        self.user_obj = user_obj
+        self.chat_obj = chat_obj
         BaseHTTPRequestHandler.__init__(self, *args)
 
     def api_say(self):
         content_len  = int(self.headers.get("content-length"))
         contents = self.rfile.read(content_len).decode("utf-8")
-        txt = dict(urlparse.parse_qsl(contents))["txt"]
+        response_dict = dict(urlparse.parse_qsl(contents))
+        txt = ""
+        if "txt" in response_dict:
+            txt = response_dict["txt"]
         
-        print("api sayが呼ばれました")
         self.send_response(200)
         self.end_headers()
-        message = self.callback(txt)
+        message = self.user_obj.callback_method(txt)
         self.wfile.write(message.encode())
         return
 
-    def show_form(self):
+    def show_form(self, query_dic):
         self.send_response(200)
         self.end_headers()
-        startup_utterance = self.initfunc()
+        startup_utterance = self.user_obj.init_function(query_dic)
 
         default_view = """
             <style>
@@ -73,7 +64,7 @@ class CallbackServer(BaseHTTPRequestHandler):
                 function(res) {
                   
                   var html = "<div class='usr'><span>" + esc(txt) +
-                    "</span>:あなた</div><div class='bot'><robot_name>:<span>" + 
+                    "</span>:あなた</div><div class='bot'><bot_name>:<span>" + 
                     esc(res) + "</span></div>";
                   $('#chat').html($('#chat').html()+html);
                   $('#txt').val('').focus();
@@ -87,15 +78,15 @@ class CallbackServer(BaseHTTPRequestHandler):
             """
 
         message = None
-        message = main_view.replace("<bot_name>",self.bot_name)
+        message = main_view.replace("<bot_name>",self.chat_obj.BOT_NAME)
         
         if startup_utterance is not None:
-            message = message.replace("<init_chat_html>","""<div class="bot">""" + self.bot_name + """:<span>""" + startup_utterance + """</span></div>""")
+            message = message.replace("<init_chat_html>","""<div class="bot">""" + self.chat_obj.BOT_NAME + """:<span>""" + startup_utterance + """</span></div>""")
         else:
             message = message.replace("<init_chat_html>","")
         
-        if self.html is not None:
-            message = message.replace("<userdef>",self.html)
+        if self.chat_obj.html is not None:
+            message = message.replace("<userdef>",self.chat_obj.html)
         else:
             message = message.replace("<userdef>",default_view)
 
@@ -103,7 +94,10 @@ class CallbackServer(BaseHTTPRequestHandler):
         return
 
     def do_GET(self):
-        self.show_form()
+        query_dic = {}
+        if "?" in self.path:
+            query_dic = urlparse.parse_qs(self.path.split("?")[1])
+        self.show_form(query_dic)
 
     def do_POST(self):
         self.api_say()

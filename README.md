@@ -16,15 +16,43 @@ $ pip install chatbotweb
 ## how to use
 
 ```
-from chatbotweb import CallbackServer
+#!/usr/bin/env python
+# coding:utf-8
 
-def callback_method(text):
-    if text == "Hello":
-        return "Hello! Oni-chan!"
-    else:
-        return "Sorry, I don't know what you mean."
+from chatbotweb.ChatServer import ChatServer
 
-CallbackServer.start("0.0.0.0",8080, callback_method)
+class myChatClass():
+
+    BOT_NAME = "my bot"
+    # override html file
+    html = None
+
+    # Run only once when the server starts
+    def __init__(self):
+        pass
+
+    class UserClass():
+
+        # Run only once when accessing from an unknown IP address
+        def __init__(self):
+            pass
+
+        # Run when the page is accessed
+        # Return value : The first utterance spoken by the robot when accessing the site
+        def init_function(self, query_params):
+            return "hello"
+
+        # Run when there is a user utterance
+        # Return value : Robot utterance to user utterance
+        def callback_method(self,text):
+            return "response "+text
+
+if __name__ == '__main__':
+
+    address = "0.0.0.0"
+    port = 3000
+    chat_server = ChatServer(myChatClass())
+    chat_server.start(address, port)
 ```
 
 please access in this page
@@ -34,7 +62,7 @@ http://localhost:8080
 
 global access
 http://[server global ip address]:8080
-※ please open 8080 port of firewall
+※ please open 8080 port of firewall and set the port conversion of the router
 ```
 
 ## customize view
@@ -56,8 +84,14 @@ myhtml = """
 </style>
 <h1>チャットボットと会話しよう</h1>
 """
-
-CallbackServer.start(8080, callback_method, html = myhtml)
+CallbackServer.start(
+    ip_address,
+    port, 
+    callback_method, 
+    init_function, 
+    bot_name, 
+    html = myhtml
+)
 ```
 
 The default html looks like this

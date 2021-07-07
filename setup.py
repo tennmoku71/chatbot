@@ -1,14 +1,14 @@
 import setuptools
 
 def _requirements():
-    return ["os","http", "cgi", "sys", "io" , "importlib"]
+    return ["http","urllib"]
 
 def _test_requirements():
-    return ["os","http", "cgi", "sys", "io" , "importlib"]
+    return ["http","urllib"]
  
 setuptools.setup(
     name="chatbotweb",
-    version="0.0.4",
+    version="0.1.0",
     author="Yoshiki Ohira",
     author_email="ohira.yoshiki@irl.sys.es.osaka-u.ac.jp",
     description="Automatic generation of web interface for user-defined chatbot",
@@ -17,7 +17,7 @@ setuptools.setup(
     url="",
     packages=setuptools.find_packages(),
     package_data={
-        'chatbotweb': ['cgi-bin/base.html','cgi-bin/chatbot.py','cgi-bin/default.html'],
+        'chatbotweb': ['ChatServer.py','ChatHandler.py'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",

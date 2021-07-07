@@ -1,3 +1,4 @@
 build/
 dist/
 chatbotweb.egg-info/
+venv/
