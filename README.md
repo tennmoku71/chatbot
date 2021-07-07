@@ -1,4 +1,4 @@
-# Chatbot Project
+# ChatbotWeb
 
 ## Overview
 Web browser chat bot on python
@@ -19,9 +19,9 @@ $ pip install chatbotweb
 #!/usr/bin/env python
 # coding:utf-8
 
-from chatbotweb.ChatServer import ChatServer
+from chatbotweb.chat_server import ChatServer
 
-class myChatClass():
+class MyChatClass():
 
     BOT_NAME = "my bot"
     # override html file
@@ -31,27 +31,27 @@ class myChatClass():
     def __init__(self):
         pass
 
-    class UserClass():
+class UserClass():
 
-        # Run only once when accessing from an unknown IP address
-        def __init__(self):
-            pass
+    # Run only once when accessing from an unknown IP address
+    def __init__(self):
+        pass
 
-        # Run when the page is accessed
-        # Return value : The first utterance spoken by the robot when accessing the site
-        def init_function(self, query_params):
-            return "hello"
+    # Run when the page is accessed
+    # Return value : The first utterance spoken by the robot when accessing the site
+    def init_function(self, query_params):
+        return "hello"
 
-        # Run when there is a user utterance
-        # Return value : Robot utterance to user utterance
-        def callback_method(self,text):
-            return "response "+text
+    # Run when there is a user utterance
+    # Return value : Robot utterance to user utterance
+    def callback_method(self,text):
+        return "response "+text
 
 if __name__ == '__main__':
 
     address = "0.0.0.0"
-    port = 3000
-    chat_server = ChatServer(myChatClass())
+    port = 8080
+    chat_server = ChatServer(myChatClass, UserClass)
     chat_server.start(address, port)
 ```
 

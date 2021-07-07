@@ -8,7 +8,7 @@ def _test_requirements():
  
 setuptools.setup(
     name="chatbotweb",
-    version="0.1.0",
+    version="0.1.3",
     author="Yoshiki Ohira",
     author_email="ohira.yoshiki@irl.sys.es.osaka-u.ac.jp",
     description="Automatic generation of web interface for user-defined chatbot",
@@ -17,7 +17,7 @@ setuptools.setup(
     url="",
     packages=setuptools.find_packages(),
     package_data={
-        'chatbotweb': ['ChatServer.py','ChatHandler.py'],
+        'chatbotweb': ['chat_server.py'],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
