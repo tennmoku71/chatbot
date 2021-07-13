@@ -12,6 +12,7 @@ class ChatServer():
     def handler(self, *args):
         ip_address = args[1][0]
         user_obj = None
+        print(ip_address)
         if ip_address in self.access_list:
             user_obj = self.access_list[ip_address]
         else:
@@ -117,10 +118,10 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
         return
 
     def do_GET(self):
-        query_dic = {}
-        if "?" in self.path:
-            query_dic = urlparse.parse_qs(self.path.split("?")[1])
-        self.show_form(query_dic)
+        parse_result = urlparse.urlparse(self.path)
+        if parse_result.path == "/":
+            query_dic = urlparse.parse_qs(parse_result.query)
+            self.show_form(query_dic)
 
     def do_POST(self):
         self.api_say()
