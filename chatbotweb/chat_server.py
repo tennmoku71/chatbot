@@ -12,7 +12,6 @@ class ChatServer():
     def handler(self, *args):
         ip_address = args[1][0]
         user_obj = None
-        print(ip_address)
         if ip_address in self.access_list:
             user_obj = self.access_list[ip_address]
         else:
@@ -42,77 +41,108 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
         txt = ""
         if "txt" in response_dict:
             txt = response_dict["txt"]
-        
+
         self.send_response(200)
         self.end_headers()
-        message = self.user_obj.callback_method(txt)
-        self.wfile.write(message.encode())
+        message, continuous_flag = self.user_obj.callback_method(txt)
+        if message != None:
+            if type(message) == list:
+                for s in message:
+                    self.wfile.write(s.encode())
+            elif type(message) == str:
+                self.wfile.write(message.encode())
+
+        if continuous_flag == False:
+            message = "。#finish"
+            self.wfile.write(message.encode())
         return
+
+    default_view = """
+        <style>
+            h1   { background-color: #ffe0e0; }
+            div  { padding:10px; }
+            span { border-radius: 10px; background-color: #ffe0e0; padding:8px; }
+            .bot { text-align: left; }
+            .usr { text-align: right; }
+        </style>
+        <h1>チャットボットと会話しよう</h1>
+    """
+
+    main_view = """
+        <html><meta charset="utf-8"><body>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <userdef>
+        <div id="chat"><init_chat_html></div>
+        <div class='usr'><input id="txt" size="40">
+        <button id="button" onclick="say()">発言</button></div>
+        <script>
+        
+        var url = ".";
+        function htmlentities(str){
+          return String(str).replace(/&/g, "&amp;")
+            .replace(/"/g, "&quot;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+        }
+
+        function say() {
+            var txt = $('#txt').val();
+            var user_html = "<div class='usr'><span>" + esc(txt) + "</span>:あなた</div>";
+            $('#chat').html($('#chat').html() + user_html);
+            $('#txt').val('').focus();
+            $.post(url, {"txt":htmlentities(txt)},
+                function(res) {
+                    var textArr = esc(res).split("。");
+                    for (var i = 0, len = textArr.length; i < len; ++i) {
+                        if(!textArr[i].startsWith("#")){
+                            var robot_html = "<div class='bot'><bot_name>:<span>" + textArr[i] + "</span></div>";
+                            $('#chat').html($('#chat').html() + robot_html);
+                        }
+                    }
+                    if(!($.inArray("#finish",textArr)==-1)){
+                        console.log("disable input")
+                        $("#txt").prop('disabled', true);
+                        $("#button").prop('disabled', true);
+                    }
+                });
+        }
+        function esc(s) {
+            return s.replace('&', '&amp;').replace('<','&lt;')
+                    .replace('>', '&gt;');
+        }
+        </script></body></html>
+        """
+
+    error_view = """
+        <html><meta charset="utf-8"><body>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        エラーが発生しました <error-log>
+        </body></html>
+        """
 
     def show_form(self, query_dic):
         self.send_response(200)
         self.end_headers()
-        startup_utterance = self.user_obj.init_function(query_dic)
-
-        default_view = """
-            <style>
-                h1   { background-color: #ffe0e0; }
-                div  { padding:10px; }
-                span { border-radius: 10px; background-color: #ffe0e0; padding:8px; }
-                .bot { text-align: left; }
-                .usr { text-align: right; }
-            </style>
-            <h1>チャットボットと会話しよう</h1>
-        """
-
-        main_view = """
-            <html><meta charset="utf-8"><body>
-            <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-            <userdef>
-            <div id="chat"><init_chat_html></div>
-            <div class='usr'><input id="txt" size="40">
-            <button onclick="say()">発言</button></div>
-            <script>
-            
-            var url = ".";
-            function htmlentities(str){
-              return String(str).replace(/&/g, "&amp;")
-                .replace(/"/g, "&quot;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-            }
-
-            function say() {
-              var txt = $('#txt').val();
-              $.post(url, {"txt":htmlentities(txt)},
-                function(res) {
-                  
-                  var html = "<div class='usr'><span>" + esc(txt) +
-                    "</span>:あなた</div><div class='bot'><bot_name>:<span>" + 
-                    esc(res) + "</span></div>";
-                  $('#chat').html($('#chat').html()+html);
-                  $('#txt').val('').focus();
-                });
-            }
-            function esc(s) {
-                return s.replace('&', '&amp;').replace('<','&lt;')
-                        .replace('>', '&gt;');
-            }
-            </script></body></html>
-            """
 
         message = None
-        message = main_view.replace("<bot_name>",self.chat_obj.BOT_NAME)
-        
-        if startup_utterance is not None:
-            message = message.replace("<init_chat_html>","""<div class="bot">""" + self.chat_obj.BOT_NAME + """:<span>""" + startup_utterance + """</span></div>""")
-        else:
-            message = message.replace("<init_chat_html>","")
-        
-        if self.chat_obj.html is not None:
-            message = message.replace("<userdef>",self.chat_obj.html)
-        else:
-            message = message.replace("<userdef>",default_view)
+
+        try:
+            startup_utterance = self.user_obj.init_function(query_dic)
+            message = ChatRequestHandler.main_view.replace("<bot_name>",self.chat_obj.BOT_NAME)
+            
+            if startup_utterance is not None:
+                message = message.replace("<init_chat_html>","""<div class="bot">""" + self.chat_obj.BOT_NAME + """:<span>""" + startup_utterance + """</span></div>""")
+            else:
+                message = message.replace("<init_chat_html>","")
+            
+            if self.chat_obj.html is not None:
+                message = message.replace("<userdef>",self.chat_obj.html)
+            else:
+                message = message.replace("<userdef>",ChatRequestHandler.default_view)
+
+        except Exception as e:
+            message = ChatRequestHandler.error_view
+            message = message.replace("<error-log>",str(e))
 
         self.wfile.write(message.encode())
         return
