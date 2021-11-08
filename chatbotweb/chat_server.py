@@ -33,8 +33,6 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
     def __init__(self,chat_obj ,user_obj, *args):
         self.user_obj = user_obj
         self.chat_obj = chat_obj
-        if not hasattr(self.user_obj, 'conversation_logs'):
-            self.user_obj.conversation_logs = []
         BaseHTTPRequestHandler.__init__(self, *args)
 
     def api_say(self):
@@ -44,17 +42,11 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
         txt = ""
         if "txt" in response_dict:
             txt = response_dict["txt"]
-
-        if txt == "":
-            return
         
         self.send_response(200)
         self.end_headers()
         message = self.user_obj.callback_method(txt)
         self.wfile.write(message.encode())
-
-        self.user_obj.conversation_logs.append((txt,message))
-
         return
 
     def show_form(self, query_dic):
@@ -77,12 +69,7 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
             <html><meta charset="utf-8"><body>
             <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
             <userdef>
-            <div id="chat">"""
-
-        for log in self.user_obj.conversation_logs:
-            main_view = main_view + "<div class='usr'><span>" + log[0] + "</span>:あなた</div><div class='bot'><bot_name>:<span>" + log[1] + "</span></div>"
-
-        main_view += """<init_chat_html></div>
+            <div id="chat"><init_chat_html></div>
             <div class='usr'><input id="txt" size="40">
             <button onclick="say()">発言</button></div>
             <script>
