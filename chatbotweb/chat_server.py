@@ -105,7 +105,7 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
                         var textArr = esc(res).split("。");
                         for (var i = 0, len = textArr.length; i < len; ++i) {
                             if(!textArr[i].startsWith("#") & textArr[i] != ""){
-                                await sleep(3);
+                                <time_delay>
                                 var robot_html = "<div class='bot'><bot_name>:<span>" + textArr[i] + "</span></div>";
                                 $('#chat').html($('#chat').html() + robot_html);
                             }
@@ -153,10 +153,16 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
             else:
                 message = message.replace("<init_chat_html>","")
             
-            if self.chat_obj.html is not None:
+            if hasattr(self.chat_obj,"html") and self.chat_obj.html is not None:
                 message = message.replace("<userdef>",self.chat_obj.html)
             else:
                 message = message.replace("<userdef>",ChatRequestHandler.default_view)
+
+            if hasattr(self.user_obj,"valid_deray") and self.user_obj.valid_deray:
+                message = message.replace("<time_delay>","await sleep(3);") 
+            else:
+                message = message.replace("<time_delay>","") 
+
 
         except Exception as e:
             message = ChatRequestHandler.error_view
