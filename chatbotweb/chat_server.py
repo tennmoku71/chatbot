@@ -16,6 +16,7 @@ class ChatServer():
             user_obj = self.access_list[ip_address]
         else:
             user_obj = self.user_class(self.chat_obj)
+            user_obj.ip_address = ip_address
             self.access_list[ip_address] = user_obj
 
         return ChatRequestHandler(self.chat_obj,user_obj,*args)
@@ -38,12 +39,15 @@ class ChatRequestHandler(BaseHTTPRequestHandler):
         content_len  = int(self.headers.get("content-length"))
         contents = self.rfile.read(content_len).decode("utf-8")
         response_dict = dict(urlparse.parse_qsl(contents))
+        self.send_response(200)
+        self.end_headers()
+
         txt = ""
         if "txt" in response_dict:
             txt = response_dict["txt"]
 
-        self.send_response(200)
-        self.end_headers()
+        self.user_obj.response_param = response_dict
+
         message, continuous_flag = self.user_obj.callback_method(txt)
         if message != None:
             if type(message) == list:
